@@ -1,0 +1,129 @@
+﻿@{
+    ViewData["Title"] = "Lender";
+    Layout = "_LayoutLender";
+}
+
+<div class="p-3 md:p-5">
+    <div class="card overflow-x-auto rounded-md bg-white p-2 shadow gap-2">
+        <div class="grid grid-flow-col justify-between">
+            <div class="flex gap-2">
+                
+                <select class="select select-bordered w-full max-w-28" id="status" onchange="fetchData()">
+                    <option value="">Show All</option>
+                    <option value="Requested" selected>Requested</option>
+                    <option value="Funded">Funded</option>
+                    <option value="Repaid">Repaid</option>
+                </select>
+                <select class="select select-bordered w-full max-w-28" id="filter" onchange="fetchData()">
+                    <option value="interestRate" selected>Best Rate</option>
+                    <option value="amount">Amount</option>
+                    <option value="duration">Duration</option>
+                    <option value="name">Name</option>
+                    <option value="status">Status</option>
+                </select>
+                @await Html.PartialAsync("_SortSwapDesc")
+            </div>
+            <form class="input input-bordered flex items-center gap-2 max-w-md" onsubmit="fetchData(event)">
+                <input type="text" class="grow" placeholder="Search" id="search" />
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 16 16"
+                     fill="currentColor"
+                     class="h-4 w-4 opacity-70">
+                    <path fill-rule="evenodd"
+                          d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                          clip-rule="evenodd" />
+                </svg>
+                <button type="submit" class="hidden"></button>
+            </form>
+        </div>
+        <table class="table" id="userTable">
+            <!-- head -->
+            <thead class=" bg-base-200">
+                <tr>
+                    <th>No.</th>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Interest Rate</th>
+                    <th>Duration</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="hover hidden">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-outline btn-primary btn-sm">
+                            Fund
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr />
+        <div class="grid justify-center">
+            @await Html.PartialAsync("_Pagination")
+        </div>
+    </div>
+</div>
+
+<dialog id="fundingModal" class="modal">
+    <div class="modal-box">
+        <h3 class="text-lg font-bold">Funding</h3>
+         <div class="grid grid-flow-row gap-3 justify-center pt-5 w-full">
+            <div class="grid grid-flow-row justify-center ">
+                <p class="text-center">Your payment will be</p>
+                <h3 id="fundingAmount" class="font-bold text-3xl text-center">Rp</h3>
+            </div>
+            <div class="grid grid-flow-col grid-cols-2 justify-around">
+                <div class="grid grid-flow-rowjustify-center ">
+                    <p class="text-center">Rate</p>
+                    <p class="font-bold text-center" id="fundingInterestRate">6%</p>
+                </div>
+                <div class="grid grid-flow-row justify-center ">
+                    <p class="text-center">Duration</p>
+                    <p class="font-bold text-center" id="fundingDuration">12Month</p>
+                </div>
+            </div>
+            <div class="grid grid-flow-row justify-center ">
+                <p class ="text-center">To</p>
+                <h3 id="fundingName" class="font-bold text-center">Rp</h3>
+            </div>
+        </div>
+        <div role="alert" class="badge badge-error badge-outline badge-lg hidden p-5 mt-3 w-full" id="fundingBalanceError">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="shrink-0 h-6 w-6 stroke-current"
+                 fill="none"
+                 viewBox="0 0 24 24">
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span></span>
+        </div>
+        <div class="modal-action grid grid-cols-2 gap-2">
+            <button class="btn w-full" onclick="closeFundingModal()">Close</button>
+            <button class="btn btn-primary w-full" onclick="funding()">Pay Now</button>
+        </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
+</dialog>
+ 
+
+<input class="input-error hidden"/>
+<div class="badge btn-disabled badge-warning badge-success badge-info hidden"></div>
+
+
+@section Scripts {
+    <script src="~/js/lender.js"></script>
+    <script>
+
+    </script>
+}

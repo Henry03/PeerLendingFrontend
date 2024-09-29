@@ -1,0 +1,76 @@
+﻿@{
+    ViewData["Title"] = "Lender";
+    Layout = "_LayoutLender";
+}
+
+<div class="p-3 md:p-5">
+    <div class="card overflow-x-auto rounded-md bg-white p-2 shadow gap-2">
+        <div class="grid grid-flow-col justify-between">
+            <div class="flex gap-2">
+                <select class="select select-bordered w-full max-w-28" id="filter" onchange="fetchData()">
+                    <option value="fundedAt" selected>Funded At</option>
+                    <option value="name">Name</option>
+                    <option value="amount">Amount</option>
+                    <option value="repaid">Repaid</option>
+                    <option value="Balance">Balance</option>
+                    <option value="Status">Status</option>
+                </select>
+                @await Html.PartialAsync("_SortSwapDesc")
+            </div>
+            <form class="input input-bordered flex items-center gap-2 max-w-md" onsubmit="fetchData(event)">
+                <input type="text" class="grow" placeholder="Search" id="search" />
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     viewBox="0 0 16 16"
+                     fill="currentColor"
+                     class="h-4 w-4 opacity-70">
+                    <path fill-rule="evenodd"
+                          d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                          clip-rule="evenodd" />
+                </svg>
+                <button type="submit" class="hidden"></button>
+            </form>
+        </div>
+        <table class="table" id="userTable">
+            <!-- head -->
+            <thead class=" bg-base-200">
+                <tr>
+                    <th>No.</th>
+                    <th>Funded At</th>
+                    <th>Borrower Name</th>
+                    <th>Amount</th>
+                    <th>Repaid Amount</th>
+                    <th>Balance Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="hover hidden">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button class="btn btn-outline btn-primary btn-sm">
+                            Fund
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr />
+        <div class="grid justify-center">
+            @await Html.PartialAsync("_Pagination")
+        </div>
+    </div>
+</div>
+
+<div class="badge btn-disabled badge-warning badge-success badge-info hidden"></div>
+
+
+@section Scripts {
+    <script src="~/js/lenderHistory.js"></script>
+    <script>
+
+    </script>
+}

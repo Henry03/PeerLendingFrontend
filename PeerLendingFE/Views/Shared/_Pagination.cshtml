@@ -1,0 +1,36 @@
+﻿<div class="join" id="pagination">
+    <button class="join-item btn btn-active hidden">2</button>
+</div>
+
+<script>
+    function renderPagination (data) {
+        const paginationContainer = document.getElementById('pagination');
+        paginationContainer.innerHTML = '';
+
+        const { totalItems, pageSize, pageNumber, totalPages } = data;
+
+        if (totalPages <= 1) return; 
+
+        const prevButton = document.createElement('button');
+        prevButton.className = 'join-item btn';
+        prevButton.disabled = pageNumber === 1;
+        prevButton.textContent = '«';
+        prevButton.onclick = () => { page -= 1; fetchData() };
+        paginationContainer.appendChild(prevButton);
+
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement('button');
+            pageButton.className = `join-item btn ${i === pageNumber ? 'btn-active' : ''}`;
+            pageButton.textContent = i;
+            pageButton.onclick = () => { page = i; fetchData() };
+            paginationContainer.appendChild(pageButton);
+        }
+
+        const nextButton = document.createElement('button');
+        nextButton.className = 'join-item btn';
+        nextButton.disabled = pageNumber === totalPages;
+        nextButton.textContent = '»';
+        nextButton.onclick = () => { page += 1; fetchData() };
+        paginationContainer.appendChild(nextButton);
+    }
+</script>

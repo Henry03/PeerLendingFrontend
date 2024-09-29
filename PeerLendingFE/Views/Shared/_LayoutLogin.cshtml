@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PeerLendingFE</title>
+    @* <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> *@
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+    @* <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" /> *@
+    @* <script src="https://cdn.tailwindcss.com"></script> *@
+    @* <link rel="stylesheet" href="~/PeerLendingFE.styles.css" asp-append-version="true" /> *@
+</head>
+<body class="bg-neutral-100">
+    <div>
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

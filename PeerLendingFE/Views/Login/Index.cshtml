@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "Login";
+    Layout = "_LayoutLogin"; 
+}
+<div class="relative flex h-screen flex-col justify-center overflow-hidden">
+    <div class="m-auto w-full rounded-md bg-white p-6 shadow-md lg:max-w-lg">
+        <h1 class="text-center text-3xl font-semibold text-purple-700">P2P Lending</h1>
+        <form class="space-y-4" onsubmit="submitLogin(event)">
+            <div>
+                <label for="email" class="label">
+                    <span class="label-text text-base">Email</span>
+                </label>
+                <input type="text" name="Email" id="email" placeholder="Email Address" class="input input-bordered input-primary w-full" />
+            </div>
+            <div>
+                <label for="password" class="label">
+                    <span class="label-text text-base">Password</span>
+                </label>
+                <input type="password" name="Password" id="password" placeholder="••••••••" class="input input-bordered input-primary w-full" />
+            </div>
+            <div role="alert" class="alert alert-error hidden" id="loginAlert">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="shrink-0 h-6 w-6 stroke-current"
+                     fill="none"
+                     viewBox="0 0 24 24">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span></span>
+            </div>
+            <div class="pt-3">
+                <button class="btn btn-primary w-full">Login</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="~/js/login.js"></script>

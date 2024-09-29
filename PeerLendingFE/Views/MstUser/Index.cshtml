@@ -1,0 +1,170 @@
+﻿@{
+    ViewData["Title"] = "Master Data User";
+
+}
+
+<div class="p-3 md:p-5">
+    <div class="card overflow-x-auto rounded-md bg-white p-2 shadow gap-2">
+        <div class="grid grid-flow-col justify-between">
+            <div class="flex gap-2">
+                <form class="input input-bordered flex items-center gap-2 max-w-md" onsubmit="fetchData(event)">
+                    <input type="text" class="grow" placeholder="Search" id="search"  />
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         viewBox="0 0 16 16"
+                         fill="currentColor"
+                         class="h-4 w-4 opacity-70">
+                        <path fill-rule="evenodd"
+                              d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                              clip-rule="evenodd" />
+                    </svg>
+                    <button type="submit" class="hidden"></button>
+                </form>
+                <select class="select select-bordered w-full max-w-28" id="filter" onchange="fetchData()">
+                    <option value="name" selected>Name</option>
+                    <option value="email">Email</option>
+                    <option value="balance">Balance</option>
+                </select>
+                @await Html.PartialAsync("_SortSwap")
+            </div>
+            <button class="btn btn-primary max-w-28" onclick="openAddUserModal()">
+                Add User
+            </button>
+        </div>
+        <table class="table" id="userTable">
+            <!-- head -->
+            <thead class=" bg-base-200">
+                <tr>
+                    <th>No.</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Balance</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="hover hidden">
+                    <td>${number++}</td>
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.role}</td>
+                    <td>${user.balance}</td>
+                    <td>
+                        <div onClick="editUser('${user.id}')" class="btn btn-outline btn-warning btn-sm">Warning</div>
+                        <div class="btn btn-outline btn-error btn-sm">Error</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr />
+        <div class="grid justify-center">
+            @await Html.PartialAsync("_Pagination")
+        </div>
+    </div>
+</div>
+
+<dialog id="addUserModal" class="modal">
+    <div class="modal-box">
+        <h3 class="text-lg font-bold">Add User</h3>
+        <label class="form-control w-full">
+            <div class="label">
+                <span class="label-text">Name</span>
+            </div>
+            <input type="text" id="addName" placeholder="Type here" class="input input-bordered w-full" />
+            <span class="label-text-alt text-red-500 hidden" id="addNameError"></span>
+        </label>
+        <label class="form-control w-full">
+            <div class="label">
+                <span class="label-text">Email</span>
+            </div>
+            <input type="text" id="addEmail" placeholder="Type here" class="input input-bordered w-full" />
+            <span class="label-text-alt text-red-500 hidden" id="addEmailError"></span>
+        </label>
+        <label class="form-control w-full">
+            <div class="label">
+                <span class="label-text">Role</span>
+            </div>
+            <select class="select select-bordered" id="addRole">
+                <option value="admin">Admin</option>
+                <option value="borrower">Borrower</option>
+                <option value="lender">Lender</option>
+            </select>
+            <div class="label hidden" id="addRoleError">
+                <span class="label-text-alt text-red-500"></span>
+            </div>
+        </label>
+        <div class="modal-action">
+            <button class="btn" onclick="closeAddUserModal()">Close</button>
+            <button class="btn btn-primary" onclick="addUser()">Add User</button>
+        </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
+</dialog>
+ 
+<dialog id="editUserModal" class="modal">
+    <div class="modal-box">
+        <h3 class="text-lg font-bold">Edit User</h3>
+        <label class="form-control w-full">
+            <div class="label">
+                <span class="label-text">Name</span>
+            </div>
+            <input type="text" id="name" placeholder="Type here" class="input input-bordered w-full" />
+        </label>
+        <label class="form-control w-full">
+            <div class="label">
+                <span class="label-text">Role</span>
+            </div>
+            <select class="select select-bordered" id="role">
+                <option value="admin">Admin</option>
+                <option value="borrower">Borrower</option>
+                <option value="lender">Lender</option>
+            </select>
+        </label>
+        <label class="form-control w-full">
+            <div class="label">
+                <span class="label-text">Balance</span>
+            </div>
+            <label class="input input-bordered flex items-center gap-2">
+                Rp
+                <input id="balance" type="number" class="grow" placeholder="Daisy" />
+            </label>
+        </label>
+        <div class="modal-action">
+            <form method="dialog">
+                <!-- if there is a button in form, it will close the modal -->
+                <button class="btn">Close</button>
+            </form>
+            <button class="btn btn-primary" onclick="saveEditUser()">Save</button>
+        </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
+</dialog>
+
+<dialog id="deleteUserModal" class="modal">
+    <div class="modal-box">
+        <h3 class="text-lg font-bold">Delete User</h3>
+        <p className="py-4">Are you sure want to delete this user?</p>
+        <div class="modal-action grid grid-flow-col grid-cols-2">
+            <button class="btn btn-ghost" onclick="closeDeleteModal()">Close</button>
+            <button class="btn btn-error" onclick="deleteUser()">Delete</button>
+        </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
+</dialog>
+
+<input class="input-error hidden"/>
+
+
+
+@section Scripts {
+    <script src="~/js/mstuser.js"></script>
+    <script>
+
+    </script>
+}

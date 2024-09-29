@@ -1,0 +1,121 @@
+﻿@{
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+}
+
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Lender</title>
+    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @* <link rel="stylesheet" href="~/PeerLendingFE.styles.css" asp-append-version="true" /> *@
+
+    @* <link href="~/css/app.min.css" rel="stylesheet" /> *@
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="~/css/styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body class="bg-neutral-100">
+    <div class="navbar bg-base-100">
+        <div class="navbar-start">
+            <div class="dropdown">
+                <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="h-5 w-5"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M4 6h16M4 12h8m-8 6h16" />
+                    </svg>
+                </div>
+                <ul tabindex="0"
+                    class="menu menu-sm dropdown-content rounded-box z-[1] mt-3 w-52 bg-base-100 p-2 shadow">
+                    <li><a asp-controller="Lender" asp-action="Index" class="@(currentController == "Lender" && currentAction == "Index" ? "btn-active" : "")">Home</a></li>
+                    <li><a asp-controller="Lender" asp-action="History" class="@(currentController == "Lender" && currentAction == "History" ? "btn-active" : "")">History</a></li>
+                </ul>
+            </div>
+            <a class="btn btn-ghost text-xl">PeerToPeer</a>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1">
+                <li><a asp-controller="Lender" asp-action="Index" class="@(currentController == "Lender" && currentAction == "Index" ? "btn-active" : "")">Home</a></li>
+                <li><a asp-controller="Lender" asp-action="History" class="@(currentController == "Lender" && currentAction == "History" ? "btn-active" : "")">History</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end">
+            <div class="dropdown dropdown-end">
+                <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                    <div class="w-10 rounded-full">
+                        <img alt="Tailwind CSS Navbar component"
+                             src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                    </div>
+                </div>  
+                <ul tabindex="0"
+                    class="menu menu-md dropdown-content rounded-box z-[1] mt-3 bg-base-100 p-2 shadow min-w-80">
+                    <li class="cursor-default m-0 p-0">
+                        <div class="flex flex-col items-center text-center gap-1">
+                            <div class="avatar">
+                                <div class="w-20 rounded-full">
+                                    <img alt="Tailwind CSS Navbar component"
+                                            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                                </div>
+                            </div>
+                            <h2 class="card-title" id="name">Name</h2>
+                            <div class="badge badge-primary badge-outline" id="role">Lender</div>
+                            <div class="stat timeline-box pt-1">
+                                <div class="stat-title">Balance</div>
+                                <div class="stat-value font-base" id="balance">89,400</div>
+                                <button class="stat-desc btn btn-sm w-full pt-1" onclick="openTopUpModal()">Top Up</button>
+                            </div>
+                        </div>
+                    </li>
+                    <li><hr /><a onclick="logout()">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <dialog id="topUpModal" class="modal">
+        <div class="modal-box">
+            <h3 class="text-lg font-bold">Top Up Balance</h3>
+            <label class="form-control w-full">
+                <div class="label">
+                    <span class="label-text">Money Amount (Rupiah)</span>
+                </div>
+                <input type="number" min="0" id="topUpMoney" placeholder="Rp 0" class="input input-bordered w-full" />
+                <span class="label-text-alt text-red-500 hidden" id="topUpMoneyError"></span>
+            </label>
+            <div class="modal-action">
+                <button class="btn" onclick="closeTopUpModal()">Close</button>
+                <button class="btn btn-primary" onclick="topup()">Top Up</button>
+            </div>
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>close</button>
+        </form>
+    </dialog>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script src="~/js/layoutLender.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js">
+    </script>
+</body>
+</html>
